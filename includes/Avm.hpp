@@ -1,5 +1,5 @@
-#ifndef AVM_H
-# define AVM_H
+#ifndef AVM_HPP
+# define AVM_HPP
 
 enum eOperandType {
     Int8,

@@ -1,5 +1,5 @@
-#ifndef IOPERAND_CLASS_H
-# define IOPERAND_CLASS_H
+#ifndef IOPERAND_CLASS_HPP
+# define IOPERAND_CLASS_HPP
 
 # include <string>
 
