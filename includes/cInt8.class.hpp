@@ -25,7 +25,8 @@ public:
 private:
 
     std::string                 _str;
-    static const eOperandType   _type = Int8;
+    static const eOperandType   _type;
+    static const int            _precision;
 
 };
 

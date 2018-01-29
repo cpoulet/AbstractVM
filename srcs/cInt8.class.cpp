@@ -1,5 +1,8 @@
 #include "cInt8.class.hpp"
 
+eOperandType const  cInt8::_type = Int8;
+int const           cInt8::_precision = 8;
+
 cInt8::cInt8() : _str("Int8") {
     return;
 }
@@ -13,5 +16,5 @@ eOperandType        cInt8::getType() const {
 }
 
 int                 cInt8::getPrecision() const {
-    return 8;
+    return this->_precision;
 }
