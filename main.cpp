@@ -22,6 +22,12 @@ int main(int ac, char** av) {
     std::cout << ch->toString() << std::endl;
     Tokenizer   T;
     std::vector<Token>  tokens;
-    T.parseLine("push int32(42.42)", 1);
+	std::cout << "push int32(42.42)" << std::endl;
+    T.lexer("push int32(42.42)", 1);
+	while (1) {
+		std::cout << T.currentToken();
+		if (!T.next())
+			break;
+	}
     return 0;
 }

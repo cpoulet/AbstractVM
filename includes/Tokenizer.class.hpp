@@ -21,9 +21,15 @@ class Tokenizer {
 public:
 
     Tokenizer();
+	Tokenizer(Tokenizer const &);
+	Tokenizer & operator=(Tokenizer const &);
+	virtual ~Tokenizer();
     
-    void                parseLine(std::string input, unsigned int line);
+    void                lexer(std::string input, unsigned int line);
     Token &             currentToken();
+	Token &				nextToken();
+	bool				next();
+	void				addEndToken();
    
     class NoTokenException: public std::exception {
         public:

@@ -9,19 +9,48 @@ int const Tokenizer::_stateTable[7][7] = {
     {UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, REJECT, UNKNOWN, REJECT},
     {SPACE, REJECT, REJECT, REJECT, REJECT, REJECT, REJECT}};
 
-Tokenizer::Tokenizer() : _tokens(0) {
+Tokenizer::Tokenizer() {
     return;
+}
+
+Tokenizer::Tokenizer(Tokenizer const & src) {
+	*this = src;
+}
+
+Tokenizer &	Tokenizer::operator=(Tokenizer const & src) {
+	this->_tokens = src._tokens;
+	return *this;
+}
+
+Tokenizer::~Tokenizer() {
+	return;
 }
 
 const char* Tokenizer::NoTokenException::what() const throw() {
     return "There is no token anymore.";
 }
 
+void	Tokenizer::addEndToken() {
+	Token	end ("", "EOF", 0);
+    this->_tokens.push_back(end);
+}
+
 Token &     Tokenizer::currentToken() {
+    if (this->_tokens.size() == 0)
+		this->addEndToken();
+    return this->_tokens[0];
+}
+
+Token &     Tokenizer::nextToken() {
+    if (this->_tokens.size() < 2)
+		this->addEndToken();
+    return this->_tokens[1];
+}
+
+bool		Tokenizer::next() {
     if (this->_tokens.size())
-        return this->_tokens[0];
-    else
-        throw NoTokenException();
+		this->_tokens.erase(this->_tokens.begin());
+    return this->_tokens.size() ? true : false;
 }
 
 int         Tokenizer::getTransition(char c) const {
@@ -41,18 +70,18 @@ int         Tokenizer::getTransition(char c) const {
 
 std::string         Tokenizer::getType(int n) const {
     if (n == 1)
-        return "INTEGER ";
+        return "INTEGER";
     else if (n == 2)
-        return "REAL    ";
+        return "REAL";
     else if (n == 3)
-        return "STRING  ";
+        return "STRING";
     else if (n == 4)
         return "OPERATOR";
     else
-        return "UNKNOWN ";
+        return "UNKNOWN";
 }
 
-void        Tokenizer::parseLine(std::string input, unsigned int line) {
+void        Tokenizer::lexer(std::string input, unsigned int line) {
     Token               token;
     char                current = 0;
     int                 col = REJECT;
@@ -77,7 +106,7 @@ void        Tokenizer::parseLine(std::string input, unsigned int line) {
     }
     if (currentState != SPACE && token.value != "") {
         token.type = this->getType(currentState);
-        token.line = 0;
+        token.line = line;
         this->_tokens.push_back(token);
     }
 }
