@@ -5,6 +5,19 @@ const IOperand* Factory::createOperand(eOperandType type, std::string const & va
     return (this->*tab[type])(value);
 }
 
+Factory::Factory() {
+    return;
+}
+
+Factory::Factory(Factory const & src) {
+    *this = src;
+}
+
+Factory &   Factory::operator=(Factory const & src) {
+    this->_stack = src._stack;
+    return *this;
+}
+
 const IOperand* Factory::createInt8(std::string const & value) const {
     (void) value;
     std::cout << "Creating an Int8" << std::endl;

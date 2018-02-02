@@ -2,8 +2,10 @@
 # define PARSER_CLASS_HPP
 
 # include "Token.class.hpp"
+# include "IOperand.class.hpp"
 
 # include <vector>
+# include <stack>
 
 class Parser {
 
@@ -60,7 +62,9 @@ public:
     };
     
 private:
-   
+
+    std::stack<IOperand*>   _stack;
+
 };
 
 #endif

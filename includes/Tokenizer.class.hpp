@@ -29,7 +29,6 @@ public:
     Token &             currentToken();
 	Token &				nextToken();
 	bool				next();
-	void				addEndToken();
    
     class NoTokenException: public std::exception {
         public:

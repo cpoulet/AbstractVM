@@ -11,6 +11,11 @@ class Factory {
 
 public:
     
+    Factory();
+    Factory(Factory const &);
+    Factory & operator=(Factory const &);
+    virtual ~Factory();
+    
     IOperand const  *createOperand(eOperandType type, std::string const & value) const;
 
 private:

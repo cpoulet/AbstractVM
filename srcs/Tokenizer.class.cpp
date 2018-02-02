@@ -30,21 +30,18 @@ const char* Tokenizer::NoTokenException::what() const throw() {
     return "There is no token anymore.";
 }
 
-void	Tokenizer::addEndToken() {
-	Token	end ("", "EOF", 0);
-    this->_tokens.push_back(end);
-}
-
 Token &     Tokenizer::currentToken() {
-    if (this->_tokens.size() == 0)
-		this->addEndToken();
-    return this->_tokens[0];
+    if (this->_tokens.size())
+        return this->_tokens[0];
+    else
+        throw NoTokenException();
 }
 
 Token &     Tokenizer::nextToken() {
-    if (this->_tokens.size() < 2)
-		this->addEndToken();
-    return this->_tokens[1];
+    if (this->_tokens.size() >= 2)
+        return this->_tokens[1];
+    else
+        throw NoTokenException();
 }
 
 bool		Tokenizer::next() {
