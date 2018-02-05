@@ -14,8 +14,12 @@ Factory::Factory(Factory const & src) {
 }
 
 Factory &   Factory::operator=(Factory const & src) {
-    this->_stack = src._stack;
+    (void)src;
     return *this;
+}
+
+Factory::~Factory() {
+    return;
 }
 
 const IOperand* Factory::createInt8(std::string const & value) const {
@@ -46,4 +50,12 @@ const IOperand* Factory::createDouble(std::string const & value) const {
     (void) value;
     std::cout << "Creating an Double" << std::endl;
     return 0;
+}
+
+const char*     Factory::OverflowException::what() const throw() {
+        return "Overflow";
+}
+
+const char*     Factory::UnderflowException::what() const throw() {
+        return "Underflow";
 }

@@ -1,15 +1,28 @@
 #include "Parser.class.hpp"
 
+Parser::Parser() {
+    return;
+}
+
+Parser::Parser(Parser const & src) {
+    *this = src;
+}
+
+Parser &    Parser::operator=(Parser const & src) {
+    this->_stack = src._stack;
+    return *this;
+}
+
+Parser::~Parser() {
+    return;
+}
+
+void        Parser::Push(IOperand* op) {
+    this->_stack.push(op);
+}
+
 const char* Parser::UnknownInstructionException::what() const throw() {
     return "Unknown Instruction";
-}
-
-const char* Parser::OverflowException::what() const throw() {
-    return "Overflow";
-}
-
-const char* Parser::UnderflowException::what() const throw() {
-    return "Underflow";
 }
 
 const char* Parser::EmptyStackException::what() const throw() {
@@ -39,6 +52,3 @@ const char* Parser::LexicalException::what() const throw() {
 const char* Parser::SyntaxException::what() const throw() {
     return "Syntax problem";
 }
-
-            Parser::Push() {
-            }

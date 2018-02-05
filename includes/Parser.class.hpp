@@ -4,24 +4,20 @@
 # include "Token.class.hpp"
 # include "IOperand.class.hpp"
 
-# include <vector>
 # include <stack>
 
 class Parser {
 
 public:
 
+    Parser();
+    Parser(Parser const &);
+    Parser &    operator=(Parser const &);
+    virtual ~Parser();
+
+    void    Push(IOperand*);
+
     class UnknownInstructionException : public std::exception {
-        public:
-            virtual const char* what() const throw();
-    };
-    
-    class OverflowException : public std::exception {
-        public:
-            virtual const char* what() const throw();
-    };
-    
-    class UnderflowException : public std::exception {
         public:
             virtual const char* what() const throw();
     };

@@ -18,6 +18,16 @@ public:
     
     IOperand const  *createOperand(eOperandType type, std::string const & value) const;
 
+	class OverflowException : public std::exception {
+        public:
+            virtual const char* what() const throw();
+    };
+
+    class UnderflowException : public std::exception {
+        public:
+            virtual const char* what() const throw();
+    };
+
 private:
 
     IOperand const * createInt8(std::string const & value) const;

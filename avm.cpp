@@ -5,6 +5,7 @@
 #include "Factory.class.hpp"
 #include "cInt8.class.hpp"
 #include "Tokenizer.class.hpp"
+#include "Parser.class.hpp"
 
 int main(int ac, char** av) {
     if (ac == 1)

@@ -26,7 +26,6 @@ private:
 
     std::string                 _str;
     static const eOperandType   _type;
-    static const int            _precision;
 
 };
 
