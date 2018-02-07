@@ -51,7 +51,7 @@ bool		Tokenizer::next() {
 }
 
 int         Tokenizer::getTransition(char c) const {
-    if (c == ' ')
+    if (c == ' ' or c == '\n')
         return SPACE;
     else if (std::isdigit(c))
         return INTEGER;

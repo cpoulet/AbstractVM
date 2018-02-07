@@ -16,6 +16,15 @@ public:
     virtual ~Parser();
 
     void    Push(IOperand*);
+    void    Pop();
+    void    Dump() const;
+    void    Assert(IOperand*) const;
+    void    Add();
+    void    Sub();
+    void    Mul();
+    void    Div();
+    void    Mod();
+    void    Print();
 
     class UnknownInstructionException : public std::exception {
         public:
