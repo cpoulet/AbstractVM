@@ -2,6 +2,7 @@
 # define FACTORY_CLASS_HPP
 
 # include "Avm.hpp"
+# include "Operand.class.hpp"
 # include "IOperand.class.hpp"
 
 # include <iostream>
