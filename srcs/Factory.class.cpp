@@ -30,7 +30,7 @@ const IOperand* Factory::createInt8(std::string const & value) const {
         n = std::stoi(value);
         if (n > CHAR_MAX || n < CHAR_MIN)
             throw Factory::OverflowException();
-        op = new Operand<int8_t>(Int8, n);
+        op = new Operand<int8_t>(Int8, n, this);
     } catch (const std::out_of_range & exc) {
         throw Factory::OverflowException();
     }
@@ -45,7 +45,7 @@ const IOperand* Factory::createInt16(std::string const & value) const {
         n = std::stoi(value);
         if (n > SHRT_MAX || n < SHRT_MIN)
             throw Factory::OverflowException();
-        op = new Operand<int16_t>(Int16, n);
+        op = new Operand<int16_t>(Int16, n, this);
     } catch (const std::out_of_range & exc) {
         throw Factory::OverflowException();
     }
@@ -56,7 +56,7 @@ const IOperand* Factory::createInt32(std::string const & value) const {
     IOperand*   op;
     std::cout << "Creating an Int32" << std::endl;
     try {
-        op = new Operand<int32_t>(Int32, std::stoi(value));
+        op = new Operand<int32_t>(Int32, std::stoi(value), this);
     } catch (const std::out_of_range & oor) {
         throw Factory::OverflowException();
     }
@@ -67,7 +67,7 @@ const IOperand* Factory::createFloat(std::string const & value) const {
     IOperand*   op;
     std::cout << "Creating an Float" << std::endl;
     try {
-        op = new Operand<float>(Float, std::stof(value));
+        op = new Operand<float>(Float, std::stof(value), this);
     } catch (const std::out_of_range & exc) {
         throw Factory::OverflowException();
     } catch (const std::underflow_error & ue) {
@@ -80,7 +80,7 @@ const IOperand* Factory::createDouble(std::string const & value) const {
     IOperand*   op;
     std::cout << "Creating an Double" << std::endl;
     try {
-        op = new Operand<double>(Double, std::stod(value));
+        op = new Operand<double>(Double, std::stod(value), this);
     } catch (const std::out_of_range & exc) {
         throw Factory::OverflowException();
     } catch (const std::underflow_error & ue) {

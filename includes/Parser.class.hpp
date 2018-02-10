@@ -15,16 +15,16 @@ public:
     Parser &    operator=(Parser const &);
     virtual ~Parser();
 
-    void    Push(IOperand*);
-    void    Pop();
-    void    Dump() const;
-    void    Assert(IOperand*) const;
-    void    Add();
-    void    Sub();
-    void    Mul();
-    void    Div();
-    void    Mod();
-    void    Print();
+    void    push(const IOperand*);
+    void    pop();
+    void    dump() const;
+    void    assert(const IOperand*) const;
+    void    add();
+    void    sub();
+    void    mul();
+    void    div();
+    void    mod();
+    void    print();
 
     class UnknownInstructionException : public std::exception {
         public:
@@ -32,11 +32,6 @@ public:
     };
     
     class EmptyStackException : public std::exception {
-        public:
-            virtual const char* what() const throw();
-    };
-    
-    class ZeroDivisionException : public std::exception {
         public:
             virtual const char* what() const throw();
     };
@@ -68,7 +63,7 @@ public:
     
 private:
 
-    std::stack<IOperand*>   _stack;
+    std::stack<const IOperand*>   _stack;
 
 };
 

@@ -7,6 +7,7 @@
 
 enum eTransition {
     REJECT = 0,
+    MINUS,
     INTEGER,
     REAL,
     STRING,
@@ -41,7 +42,7 @@ private:
     std::string         getType(int n) const;
 
     std::vector<Token>  _tokens;
-    static int const    _stateTable[7][7];
+    static int const    _stateTable[8][8];
 
 };
 

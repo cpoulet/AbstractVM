@@ -17,19 +17,19 @@ Parser::~Parser() {
     return;
 }
 
-void        Parser::Push(IOperand* op) {
+void        Parser::push(const IOperand* op) {
     this->_stack.push(op);
 }
 
-void        Parser::Pop() {
+void        Parser::pop() {
     if (this->_stack.empty())
         throw Parser::EmptyStackException();
     else
         this->_stack.pop();
 }
 
-void        Parser::Dump() const {
-    std::stack<IOperand*>   cpy = this->_stack;
+void        Parser::dump() const {
+    std::stack<const IOperand*>   cpy = this->_stack;
     
     while (!cpy.empty()) {
         std::cout << cpy.top()->toString() << std::endl;
@@ -37,89 +37,79 @@ void        Parser::Dump() const {
     }
 }
 
-void        Parser::Assert(IOperand* op) const {
+void        Parser::assert(const IOperand* op) const {
     if (this->_stack.empty())
         throw Parser::EmptyStackException();
-    else if (op != this->_stack.top())
+    else if (op->toString() != this->_stack.top()->toString())
         throw Parser::AssertException();
 }
 
-void        Parser::Add() {
+void        Parser::add() {
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
-        IOperand*   v1 = this->_stack.top();
+        const IOperand* v1 = this->_stack.top();
         this->_stack.pop();
-        IOperand*   v2 = this->_stack.top();
+        const IOperand* v2 = this->_stack.top();
         this->_stack.pop();
-//        this->_stack.push(v2 + v1);
-        (void)v1;
-        (void)v2;
+        this->_stack.push(*v2 + *v1);
     }
 }
 
-void        Parser::Sub() {
+void        Parser::sub() {
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
-        IOperand*   v1 = this->_stack.top();
+        const IOperand* v1 = this->_stack.top();
         this->_stack.pop();
-        IOperand*   v2 = this->_stack.top();
+        const IOperand* v2 = this->_stack.top();
         this->_stack.pop();
-//        this->_stack.push(v2 - v1);
-        (void)v1;
-        (void)v2;
+        this->_stack.push(*v2 - *v1);
     }
 }
 
-void        Parser::Mul() {
+void        Parser::mul() {
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
-        IOperand*   v1 = this->_stack.top();
+        const IOperand* v1 = this->_stack.top();
         this->_stack.pop();
-        IOperand*   v2 = this->_stack.top();
+        const IOperand* v2 = this->_stack.top();
         this->_stack.pop();
-//        this->_stack.push(v2 * v1);
-        (void)v1;
-        (void)v2;
+        this->_stack.push(*v2 * *v1);
     }
 }
 
-void        Parser::Div() {
+void        Parser::div() {
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
-        IOperand*   v1 = this->_stack.top();
+        const IOperand* v1 = this->_stack.top();
         this->_stack.pop();
-        IOperand*   v2 = this->_stack.top();
+        const IOperand* v2 = this->_stack.top();
         this->_stack.pop();
-//        this->_stack.push(v2 / v1);
-        (void)v1;
-        (void)v2;
+        this->_stack.push(*v2 / *v1);
     }
 }
 
-void        Parser::Mod() {
+void        Parser::mod() {
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
-        IOperand*   v1 = this->_stack.top();
+        const IOperand* v1 = this->_stack.top();
         this->_stack.pop();
-        IOperand*   v2 = this->_stack.top();
+        const IOperand* v2 = this->_stack.top();
         this->_stack.pop();
-//        this->_stack.push(v2 % v1);
-        (void)v1;
-        (void)v2;
+        this->_stack.push(*v2 % *v1);
     }
 }
 
-void        Parser::Print() {
+void        Parser::print() {
     if (this->_stack.empty())
         throw Parser::EmptyStackException();
     else if (this->_stack.top()->getType() != Int8)
         throw Parser::AssertException();
-    std::cout << "print" << std::endl;
+    std::cout << "print : " << std::endl;
 }
 
 const char* Parser::UnknownInstructionException::what() const throw() {
@@ -128,10 +118,6 @@ const char* Parser::UnknownInstructionException::what() const throw() {
 
 const char* Parser::EmptyStackException::what() const throw() {
     return "Cannot pop from empty Stack";
-}
-
-const char* Parser::ZeroDivisionException::what() const throw() {
-    return "Division by zero";
 }
 
 const char* Parser::ExitMissingException::what() const throw() {

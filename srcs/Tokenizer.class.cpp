@@ -1,13 +1,14 @@
 #include "Tokenizer.class.hpp"
 
-int const Tokenizer::_stateTable[7][7] = {
-    {REJECT, INTEGER, REAL, STRING, OPERATOR, UNKNOWN, SPACE},
-    {INTEGER, INTEGER, REAL, REJECT, REJECT, REJECT, REJECT},
-    {REAL, REAL, UNKNOWN, REJECT, REJECT, REJECT, REJECT},
-    {STRING, STRING, STRING, STRING, REJECT, REJECT, REJECT},
-    {OPERATOR, REJECT, REJECT, REJECT, REJECT, REJECT, REJECT},
-    {UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, REJECT, UNKNOWN, REJECT},
-    {SPACE, REJECT, REJECT, REJECT, REJECT, REJECT, REJECT}};
+int const Tokenizer::_stateTable[8][8] = {
+    {REJECT, MINUS, INTEGER, REAL, STRING, OPERATOR, UNKNOWN, SPACE},
+    {MINUS, UNKNOWN, INTEGER, REAL, UNKNOWN, UNKNOWN, UNKNOWN, REJECT},
+    {INTEGER, REJECT, INTEGER, REAL, REJECT, REJECT, REJECT, REJECT},
+    {REAL, REJECT, REAL, UNKNOWN, REJECT, REJECT, REJECT, REJECT},
+    {STRING, STRING, STRING, STRING, STRING, REJECT, REJECT, REJECT},
+    {OPERATOR, REJECT, REJECT, REJECT, REJECT, REJECT, REJECT, REJECT},
+    {UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, UNKNOWN, REJECT, UNKNOWN, REJECT},
+    {SPACE, REJECT, REJECT, REJECT, REJECT, REJECT, REJECT, REJECT}};
 
 Tokenizer::Tokenizer() {
     return;
@@ -53,6 +54,8 @@ bool		Tokenizer::next() {
 int         Tokenizer::getTransition(char c) const {
     if (c == ' ' or c == '\n')
         return SPACE;
+    if (c == '-')
+        return MINUS;
     else if (std::isdigit(c))
         return INTEGER;
     else if (c == '.')
@@ -67,12 +70,14 @@ int         Tokenizer::getTransition(char c) const {
 
 std::string         Tokenizer::getType(int n) const {
     if (n == 1)
-        return "INTEGER";
+        return "MINUS";
     else if (n == 2)
-        return "REAL";
+        return "INTEGER";
     else if (n == 3)
-        return "STRING";
+        return "REAL";
     else if (n == 4)
+        return "STRING";
+    else if (n == 5)
         return "OPERATOR";
     else
         return "UNKNOWN";

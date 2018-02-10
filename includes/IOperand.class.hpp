@@ -16,13 +16,13 @@ public:
 
     virtual eOperandType        getType() const = 0;
     virtual int                 getPrecision() const = 0;
-/*
+
     virtual IOperand const *    operator+( IOperand const & rhs ) const = 0;
     virtual IOperand const *    operator-( IOperand const & rhs ) const = 0;
     virtual IOperand const *    operator*( IOperand const & rhs ) const = 0;
     virtual IOperand const *    operator/( IOperand const & rhs ) const = 0;
     virtual IOperand const *    operator%( IOperand const & rhs ) const = 0;
-*/
+
 };
 
 #endif
