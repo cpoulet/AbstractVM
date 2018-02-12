@@ -1,5 +1,5 @@
-#ifndef TOKENIZER_CLASS_HPP
-# define TOKENIZER_CLASS_HPP
+#ifndef LEXER_CLASS_HPP
+# define LEXER_CLASS_HPP
 
 # include "Token.class.hpp"
 
@@ -13,23 +13,27 @@ enum eTransition {
     STRING,
     OPERATOR,
     UNKNOWN,
+    COMMENT,
+    EXIT,
     SPACE
 };
 
 
-class Tokenizer {
+class Lexer {
 
 public:
 
-    Tokenizer();
-	Tokenizer(Tokenizer const &);
-	Tokenizer & operator=(Tokenizer const &);
-	virtual ~Tokenizer();
+    Lexer();
+	Lexer(Lexer const &);
+	Lexer & operator=(Lexer const &);
+	virtual ~Lexer();
     
     void                lexer(std::string input, unsigned int line);
     Token &             currentToken();
 	Token &				nextToken();
 	bool				next();
+    bool                isExit() const;
+    void                addSep(unsigned int line);
    
     class NoTokenException: public std::exception {
         public:
@@ -42,7 +46,7 @@ private:
     std::string         getType(int n) const;
 
     std::vector<Token>  _tokens;
-    static int const    _stateTable[8][8];
+    static int const    _stateTable[10][10];
 
 };
 

@@ -32,6 +32,7 @@ unsigned int	Token::getLine() const {
 }
 
 std::ostream &	operator<<(std::ostream & o, Token const & src) {
-	o << "Token : " << std::setw(10) << std::left << src.getType() << src.getValue() << std::endl;
+	o << "Token : " << " Line " << std::setw(6) << std::left << src.getLine();
+    o << std::setw(10) << std::left << src.getType() << src.getValue() << std::endl;
 	return o;	
 }

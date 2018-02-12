@@ -3,25 +3,23 @@
 
 #include "Avm.hpp"
 #include "Factory.class.hpp"
-#include "Tokenizer.class.hpp"
+#include "Lexer.class.hpp"
 #include "Parser.class.hpp"
 #include "Operand.class.hpp"
 
 int main(int ac, char** av) {
+    Parser  P;
     if (ac == 1)
-        std::cout << "Execute on standart input" << std::endl;
+        P.read();
     else if (ac > 1) {
-        std::ifstream   ifs(av[1]);
-        if (ifs)
-            std::cout << "Execute " << av[1] << std::endl;
-        else
-            std::cerr << "Impossible to open file " << av[1] << std::endl;
+        std::string     fname(av[1]);
+        P.read(fname);
     }
-    Tokenizer   T;
+    Lexer   T;
     std::vector<Token>  tokens;
     std::cout << "________________________" << std::endl;
-	std::cout << "push int32(-42.42)\n;;" << std::endl;
-    T.lexer("push int32(-42.42)\n;;", 1);
+	std::cout << ";;push int32(-42.42)" << std::endl;
+    T.lexer(";;push int32(-42.42)", 1);
 	while (1) {
 		std::cout << T.currentToken();
 		if (!T.next())
@@ -39,7 +37,6 @@ int main(int ac, char** av) {
     op3 = *op1 + *op2;
     std::cout << op3->toString() << std::endl;
     std::cout << "________________________" << std::endl;
-    Parser      P;
     const IOperand* op4 = F.createOperand(Int32, "2");
     const IOperand* op5 = F.createOperand(Int32, "3");
     const IOperand* op6 = F.createOperand(Int32, "5");

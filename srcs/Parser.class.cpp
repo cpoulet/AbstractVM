@@ -1,6 +1,6 @@
 #include "Parser.class.hpp"
 
-Parser::Parser() {
+Parser::Parser() : _exit(false) {
     return;
 }
 
@@ -10,11 +10,49 @@ Parser::Parser(Parser const & src) {
 
 Parser &    Parser::operator=(Parser const & src) {
     this->_stack = src._stack;
+    this->_exit = src._exit;
     return *this;
 }
 
 Parser::~Parser() {
     return;
+}
+
+void        Parser::read() {
+    std::string     line;
+    unsigned int    n = 0;
+    while (!this->_exit && std::getline(std::cin, line)) {
+        this->parseLine(line, ++n);
+        this->_lexer.addSep(n);
+    }
+    this->execute();
+}
+
+void        Parser::read(std::string fname) {
+    std::string     line;
+    std::ifstream   in(fname);
+    unsigned int    n = 0;
+    if (!in)
+        throw Parser::WrongInputFileException();
+    while (!this->_exit && std::getline(in, line)) {
+        this->parseLine(line, ++n);
+        this->_lexer.addSep(n);
+    }
+    this->execute();
+}
+
+void        Parser::parseLine(std::string line, unsigned int n) {
+    this->_lexer.lexer(line, n);
+    this->_exit = this->_lexer.isExit();
+}
+
+void        Parser::execute() {
+    std::cout << "Executing : " << std::endl;
+    while (1) {
+        std::cout << this->_lexer.currentToken();
+        if (!this->_lexer.next())
+            break;
+    }
 }
 
 void        Parser::push(const IOperand* op) {
@@ -109,7 +147,7 @@ void        Parser::print() {
         throw Parser::EmptyStackException();
     else if (this->_stack.top()->getType() != Int8)
         throw Parser::AssertException();
-    std::cout << "print : " << std::endl;
+    std::cout << "print as char " << std::endl;
 }
 
 const char* Parser::UnknownInstructionException::what() const throw() {
@@ -138,4 +176,8 @@ const char* Parser::LexicalException::what() const throw() {
 
 const char* Parser::SyntaxException::what() const throw() {
     return "Syntax problem";
+}
+
+const char* Parser::WrongInputFileException::what() const throw() {
+    return "Wrong input file";
 }

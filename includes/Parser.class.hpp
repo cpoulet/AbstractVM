@@ -1,7 +1,7 @@
 #ifndef PARSER_CLASS_HPP
 # define PARSER_CLASS_HPP
 
-# include "Token.class.hpp"
+# include "Lexer.class.hpp"
 # include "IOperand.class.hpp"
 
 # include <stack>
@@ -25,6 +25,11 @@ public:
     void    div();
     void    mod();
     void    print();
+
+    void    read();
+    void    read(std::string);
+    void    parseLine(std::string, unsigned int);
+    void    execute();
 
     class UnknownInstructionException : public std::exception {
         public:
@@ -61,9 +66,16 @@ public:
             virtual const char* what() const throw();
     };
     
+    class WrongInputFileException : public std::exception {
+        public:
+            virtual const char* what() const throw();
+    };
+    
 private:
 
-    std::stack<const IOperand*>   _stack;
+    std::stack<const IOperand*> _stack;
+    bool                        _exit;
+    Lexer                       _lexer;
 
 };
 
