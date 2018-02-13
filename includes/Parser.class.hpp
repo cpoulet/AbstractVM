@@ -17,14 +17,15 @@ public:
 
     void    push(const IOperand*);
     void    pop();
-    void    dump() const;
-    void    assert(const IOperand*) const;
+    void    dump();
+    void    assert(const IOperand*);
     void    add();
     void    sub();
     void    mul();
     void    div();
     void    mod();
     void    print();
+    void    exit();
 
     void    read();
     void    read(std::string);
@@ -78,5 +79,7 @@ private:
     Lexer                       _lexer;
 
 };
+
+# include "FunctionTab.hpp"
 
 #endif

@@ -1,5 +1,32 @@
 #include "Parser.class.hpp"
 
+t_type             g_type[] = {
+    {"int8", Int8},
+    {"int16", Int16},
+    {"int32", Int32},
+    {"float", Float},
+    {"double", Double}
+};
+
+t_instr_no_arg      g_ina[] = {
+    {"pop", &Parser::pop},
+    {"dump", &Parser::dump},
+    {"add", &Parser::add},
+    {"sub", &Parser::sub},
+    {"mul", &Parser::mul},
+    {"div", &Parser::div},
+    {"mod", &Parser::mod},
+    {"print", &Parser::print},
+    {"exit", &Parser::exit},
+    {"", NULL}
+};
+
+t_instr_with_arg    g_iwa[] = {
+    {"push", &Parser::push},
+    {"assert", &Parser::assert},
+    {"", NULL}
+};
+
 Parser::Parser() : _exit(false) {
     return;
 }
@@ -34,7 +61,7 @@ void        Parser::read(std::string fname) {
     unsigned int    n = 0;
     if (!in)
         throw Parser::WrongInputFileException();
-    while (!this->_exit && std::getline(in, line)) {
+    while (std::getline(in, line)) {
         this->parseLine(line, ++n);
         this->_lexer.addSep(n);
     }
@@ -66,7 +93,7 @@ void        Parser::pop() {
         this->_stack.pop();
 }
 
-void        Parser::dump() const {
+void        Parser::dump() {
     std::stack<const IOperand*>   cpy = this->_stack;
     
     while (!cpy.empty()) {
@@ -75,7 +102,7 @@ void        Parser::dump() const {
     }
 }
 
-void        Parser::assert(const IOperand* op) const {
+void        Parser::assert(const IOperand* op) {
     if (this->_stack.empty())
         throw Parser::EmptyStackException();
     else if (op->toString() != this->_stack.top()->toString())
@@ -148,6 +175,10 @@ void        Parser::print() {
     else if (this->_stack.top()->getType() != Int8)
         throw Parser::AssertException();
     std::cout << "print as char " << std::endl;
+}
+
+void        Parser::exit() {
+    std::cout << "Exit" << std::endl;
 }
 
 const char* Parser::UnknownInstructionException::what() const throw() {
