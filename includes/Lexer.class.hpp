@@ -32,6 +32,7 @@ public:
     Token &             currentToken();
 	Token &				nextToken();
 	bool				next();
+	bool				expectToken(unsigned int);
     bool                isExit() const;
     void                addSep(unsigned int line);
    

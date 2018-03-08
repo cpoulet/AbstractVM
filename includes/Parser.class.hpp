@@ -1,6 +1,7 @@
 #ifndef PARSER_CLASS_HPP
 # define PARSER_CLASS_HPP
 
+# include "Factory.class.hpp"
 # include "Lexer.class.hpp"
 # include "IOperand.class.hpp"
 
@@ -15,10 +16,10 @@ public:
     Parser &    operator=(Parser const &);
     virtual ~Parser();
 
-    void    push(const IOperand*);
+    void    push();
     void    pop();
     void    dump();
-    void    assert(const IOperand*);
+    void    assert();
     void    add();
     void    sub();
     void    mul();
@@ -27,10 +28,12 @@ public:
     void    print();
     void    exit();
 
-    void    read();
-    void    read(std::string);
-    void    parseLine(std::string, unsigned int);
-    void    execute();
+    void            read();
+    void            read(std::string);
+    void            parseLine(std::string, unsigned int);
+    void            execute();
+    void            instruction();
+    const IOperand* getValue();
 
     class UnknownInstructionException : public std::exception {
         public:
@@ -77,7 +80,7 @@ private:
     std::stack<const IOperand*> _stack;
     bool                        _exit;
     Lexer                       _lexer;
-
+    Factory                     _factory;
 };
 
 # include "FunctionTab.hpp"

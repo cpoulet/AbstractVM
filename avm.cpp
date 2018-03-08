@@ -36,6 +36,7 @@ int main(int ac, char** av) {
     std::cout << op2->toString() << std::endl;
     op3 = *op1 + *op2;
     std::cout << op3->toString() << std::endl;
+    /*
     std::cout << "________________________" << std::endl;
     const IOperand* op4 = F.createOperand(Int32, "2");
     const IOperand* op5 = F.createOperand(Int32, "3");
@@ -63,5 +64,6 @@ int main(int ac, char** av) {
     P.dump();
     P.pop();
     P.assert(op12);
+    */
     return 0;
 }

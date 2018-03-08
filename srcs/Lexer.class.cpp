@@ -40,6 +40,12 @@ Token &     Lexer::currentToken() {
         throw NoTokenException();
 }
 
+bool        Lexer::expectToken(unsigned int n) {
+    if (this->_tokens.size() < 2)
+        return false;
+    return (this->_tokens[1].type == n);
+}
+
 Token &     Lexer::nextToken() {
     if (this->_tokens.size() >= 2)
         return this->_tokens[1];
@@ -55,7 +61,7 @@ bool		Lexer::next() {
 
 bool        Lexer::isExit() const {
     if (!this->_tokens.empty())
-        return this->_tokens.back().type == "EXIT";
+        return this->_tokens.back().type == 8;
     else
         return false;
 }
@@ -99,7 +105,7 @@ std::string         Lexer::getType(int n) const {
 }
 
 void        Lexer::addSep(unsigned int line) {
-    Token   token("", "SEP", line);
+    Token   token("", 0, line);
     this->_tokens.push_back(token);
 }
 
@@ -115,7 +121,7 @@ void        Lexer::lexer(std::string input, unsigned int line) {
         currentState = this->_stateTable[currentState][col];
         if (currentState == REJECT) {
             if (previousState != SPACE) {
-                token.type = this->getType(previousState);
+                token.type = (unsigned int)previousState;
                 token.line = line;
                 this->_tokens.push_back(token);
                 if (previousState == EXIT)
@@ -129,7 +135,7 @@ void        Lexer::lexer(std::string input, unsigned int line) {
         previousState = currentState;
     }
     if (currentState != SPACE && token.value != "" && previousState != EXIT) {
-        token.type = this->getType(currentState);
+        token.type = (unsigned int)currentState;
         token.line = line;
         this->_tokens.push_back(token);
     }

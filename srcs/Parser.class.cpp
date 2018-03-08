@@ -8,7 +8,7 @@ t_type             g_type[] = {
     {"double", Double}
 };
 
-t_instr_no_arg      g_ina[] = {
+t_instr             g_instr[] = {
     {"pop", &Parser::pop},
     {"dump", &Parser::dump},
     {"add", &Parser::add},
@@ -18,10 +18,6 @@ t_instr_no_arg      g_ina[] = {
     {"mod", &Parser::mod},
     {"print", &Parser::print},
     {"exit", &Parser::exit},
-    {"", NULL}
-};
-
-t_instr_with_arg    g_iwa[] = {
     {"push", &Parser::push},
     {"assert", &Parser::assert},
     {"", NULL}
@@ -76,13 +72,31 @@ void        Parser::parseLine(std::string line, unsigned int n) {
 void        Parser::execute() {
     std::cout << "Executing : " << std::endl;
     while (1) {
-        std::cout << this->_lexer.currentToken();
+        this->instruction();
         if (!this->_lexer.next())
             break;
     }
 }
 
-void        Parser::push(const IOperand* op) {
+void        Parser::instruction() {
+    int i = 0;
+    while (g_instr[i].str != "") {
+        if (g_instr[i].str == this->_lexer.currentToken().getValue()) {
+            std::cout << g_instr[i].str << std::endl;
+            //*(g_instr[i].f)();
+            break;
+        }
+        ++i;
+    }
+}
+
+const IOperand* Parser::getValue() {
+    const IOperand* op = this->_factory.createOperand(Int8, "32");
+    return op;
+}
+
+void        Parser::push() {
+    const IOperand*   op = this->getValue();
     this->_stack.push(op);
 }
 
@@ -102,7 +116,8 @@ void        Parser::dump() {
     }
 }
 
-void        Parser::assert(const IOperand* op) {
+void        Parser::assert() {
+    const IOperand*   op = this->getValue();
     if (this->_stack.empty())
         throw Parser::EmptyStackException();
     else if (op->toString() != this->_stack.top()->toString())

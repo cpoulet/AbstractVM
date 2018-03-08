@@ -4,7 +4,7 @@ Token::Token() {
 	return;
 }
 
-Token::Token(std::string value, std::string type, unsigned int line) : value(value), type(type), line(line) {
+Token::Token(std::string value, unsigned int type, unsigned int line) : value(value), type(type), line(line) {
 	return;
 }
 
@@ -23,7 +23,7 @@ std::string		Token::getValue() const {
 	return this->value;
 }
 
-std::string 	Token::getType() const {
+unsigned int 	Token::getType() const {
 	return this->type;
 }
 
