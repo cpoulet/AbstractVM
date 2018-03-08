@@ -1,29 +1,17 @@
 #include "Parser.class.hpp"
 
-t_type             g_type[] = {
-    {"int8", Int8},
-    {"int16", Int16},
-    {"int32", Int32},
-    {"float", Float},
-    {"double", Double}
-};
-
-t_instr             g_instr[] = {
-    {"pop", &Parser::pop},
-    {"dump", &Parser::dump},
-    {"add", &Parser::add},
-    {"sub", &Parser::sub},
-    {"mul", &Parser::mul},
-    {"div", &Parser::div},
-    {"mod", &Parser::mod},
-    {"print", &Parser::print},
-    {"exit", &Parser::exit},
-    {"push", &Parser::push},
-    {"assert", &Parser::assert},
-    {"", NULL}
-};
-
-Parser::Parser() : _exit(false) {
+Parser::Parser() : _verbose(true), _exit(false) {
+	this->_funcs["pop"] = &Parser::pop;
+	this->_funcs["dump"] = &Parser::dump;
+	this->_funcs["add"] = &Parser::add;
+	this->_funcs["sub"] = &Parser::sub;
+	this->_funcs["mul"] = &Parser::mul;
+	this->_funcs["div"] = &Parser::div;
+	this->_funcs["mod"] = &Parser::mod;
+	this->_funcs["print"] = &Parser::print;
+	this->_funcs["exit"] = &Parser::exit;
+	this->_funcs["push"] = &Parser::push;
+	this->_funcs["assert"] = &Parser::assert;
     return;
 }
 
@@ -79,15 +67,8 @@ void        Parser::execute() {
 }
 
 void        Parser::instruction() {
-    int i = 0;
-    while (g_instr[i].str != "") {
-        if (g_instr[i].str == this->_lexer.currentToken().getValue()) {
-            std::cout << g_instr[i].str << std::endl;
-            //*(g_instr[i].f)();
-            break;
-        }
-        ++i;
-    }
+	if (this->_funcs.find(this->_lexer.currentToken().getValue()) != this->_funcs.end())
+		(this->*(_funcs.at(this->_lexer.currentToken().getValue())))();
 }
 
 const IOperand* Parser::getValue() {
@@ -96,11 +77,15 @@ const IOperand* Parser::getValue() {
 }
 
 void        Parser::push() {
+	if (this->_verbose)
+		std::cout << "Push" << std::endl;
     const IOperand*   op = this->getValue();
     this->_stack.push(op);
 }
 
 void        Parser::pop() {
+	if (this->_verbose)
+		std::cout << "Pop" << std::endl;
     if (this->_stack.empty())
         throw Parser::EmptyStackException();
     else
@@ -108,8 +93,9 @@ void        Parser::pop() {
 }
 
 void        Parser::dump() {
+	if (this->_verbose)
+		std::cout << "Dump" << std::endl;
     std::stack<const IOperand*>   cpy = this->_stack;
-    
     while (!cpy.empty()) {
         std::cout << cpy.top()->toString() << std::endl;
         cpy.pop();
@@ -117,6 +103,8 @@ void        Parser::dump() {
 }
 
 void        Parser::assert() {
+	if (this->_verbose)
+		std::cout << "Assert" << std::endl;
     const IOperand*   op = this->getValue();
     if (this->_stack.empty())
         throw Parser::EmptyStackException();
@@ -125,6 +113,8 @@ void        Parser::assert() {
 }
 
 void        Parser::add() {
+	if (this->_verbose)
+		std::cout << "Add" << std::endl;
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
@@ -137,6 +127,8 @@ void        Parser::add() {
 }
 
 void        Parser::sub() {
+	if (this->_verbose)
+		std::cout << "Sub" << std::endl;
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
@@ -149,6 +141,8 @@ void        Parser::sub() {
 }
 
 void        Parser::mul() {
+	if (this->_verbose)
+		std::cout << "Mul" << std::endl;
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
@@ -161,6 +155,8 @@ void        Parser::mul() {
 }
 
 void        Parser::div() {
+	if (this->_verbose)
+		std::cout << "Div" << std::endl;
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
@@ -173,6 +169,8 @@ void        Parser::div() {
 }
 
 void        Parser::mod() {
+	if (this->_verbose)
+		std::cout << "Mod" << std::endl;
     if (this->_stack.size() < 2)
         throw Parser::EmptyStackException();
     else {
@@ -185,11 +183,12 @@ void        Parser::mod() {
 }
 
 void        Parser::print() {
+	if (this->_verbose)
+		std::cout << "Print" << std::endl;
     if (this->_stack.empty())
         throw Parser::EmptyStackException();
     else if (this->_stack.top()->getType() != Int8)
         throw Parser::AssertException();
-    std::cout << "print as char " << std::endl;
 }
 
 void        Parser::exit() {

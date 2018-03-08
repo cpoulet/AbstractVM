@@ -6,6 +6,7 @@
 # include "IOperand.class.hpp"
 
 # include <stack>
+# include <map>
 
 class Parser {
 
@@ -74,15 +75,15 @@ public:
         public:
             virtual const char* what() const throw();
     };
-    
+
 private:
 
     std::stack<const IOperand*> _stack;
+	std::map<std::string, Func>	_funcs;
+	bool						_verbose;
     bool                        _exit;
     Lexer                       _lexer;
     Factory                     _factory;
 };
-
-# include "FunctionTab.hpp"
 
 #endif

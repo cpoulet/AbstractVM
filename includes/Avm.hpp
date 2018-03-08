@@ -12,4 +12,8 @@ enum eOperandType {
     Double
 };
 
+class Parser;
+
+typedef void (Parser::*Func)(void);
+
 #endif
