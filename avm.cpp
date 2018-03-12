@@ -9,12 +9,18 @@
 
 int main(int ac, char** av) {
     Parser  P;
-    if (ac == 1)
-        P.read();
-    else if (ac > 1) {
-        std::string     fname(av[1]);
-        P.read(fname);
+    try {
+        if (ac == 1)
+            P.read();
+        else if (ac > 1) {
+            std::string     fname(av[1]);
+            P.read(fname);
+        }
     }
+    catch (std::exception & e) {
+        std::cout << "Error : " << e.what() << std::endl;
+    }
+    /*
     Lexer   T;
     std::vector<Token>  tokens;
     std::cout << "________________________" << std::endl;
@@ -36,7 +42,6 @@ int main(int ac, char** av) {
     std::cout << op2->toString() << std::endl;
     op3 = *op1 + *op2;
     std::cout << op3->toString() << std::endl;
-    /*
     std::cout << "________________________" << std::endl;
     const IOperand* op4 = F.createOperand(Int32, "2");
     const IOperand* op5 = F.createOperand(Int32, "3");

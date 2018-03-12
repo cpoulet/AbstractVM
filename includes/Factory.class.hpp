@@ -19,6 +19,8 @@ public:
     
     IOperand const  *createOperand(eOperandType type, std::string const & value) const;
 
+    bool    verbose;
+
 	class OverflowException : public std::exception {
         public:
             virtual const char* what() const throw();

@@ -1,6 +1,6 @@
 #include "Parser.class.hpp"
 
-Parser::Parser() : _verbose(true), _exit(false) {
+Parser::Parser() : _verbose(false), _exit(false) {
 	this->_funcs["pop"] = &Parser::pop;
 	this->_funcs["dump"] = &Parser::dump;
 	this->_funcs["add"] = &Parser::add;
@@ -58,7 +58,6 @@ void        Parser::parseLine(std::string line, unsigned int n) {
 }
 
 void        Parser::execute() {
-    std::cout << "Executing : " << std::endl;
     while (1) {
         this->instruction();
         if (!this->_lexer.next())
@@ -72,7 +71,34 @@ void        Parser::instruction() {
 }
 
 const IOperand* Parser::getValue() {
-    const IOperand* op = this->_factory.createOperand(Int8, "32");
+    eOperandType    n;
+    std::string     value;
+    this->_lexer.next();
+    this->_lexer.expectToken(4);
+    if (this->_lexer.currentToken().getValue() == "int8")
+        n = Int8;
+    else if (this->_lexer.currentToken().getValue() == "int16")
+        n = Int16;
+    else if (this->_lexer.currentToken().getValue() == "int32")
+        n = Int32;
+    else if (this->_lexer.currentToken().getValue() == "float")
+        n = Float;
+    else if (this->_lexer.currentToken().getValue() == "double")
+        n = Double;
+    else
+        throw Parser::UnknownInstructionException();
+    this->_lexer.next();
+    if (this->_lexer.currentToken().getValue() != "(")
+        throw Parser::UnknownInstructionException();
+    this->_lexer.next();
+    if (this->_lexer.currentToken().getType() != 2 && this->_lexer.currentToken().getType() != 3)
+        throw Parser::UnknownInstructionException();
+    else
+        value = this->_lexer.currentToken().getValue();
+    const IOperand* op = this->_factory.createOperand(n, value);
+    this->_lexer.next();
+    if (this->_lexer.currentToken().getValue() != ")")
+        throw Parser::UnknownInstructionException();
     return op;
 }
 
@@ -192,7 +218,8 @@ void        Parser::print() {
 }
 
 void        Parser::exit() {
-    std::cout << "Exit" << std::endl;
+	if (this->_verbose)
+        std::cout << "Exit" << std::endl;
 }
 
 const char* Parser::UnknownInstructionException::what() const throw() {

@@ -6,6 +6,7 @@ const IOperand* Factory::createOperand(eOperandType type, std::string const & va
 }
 
 Factory::Factory() {
+    this->verbose = false;
     return;
 }
 
@@ -25,7 +26,8 @@ Factory::~Factory() {
 const IOperand* Factory::createInt8(std::string const & value) const {
     int         n;
     IOperand*   op;
-    std::cout << "Creating an Int8" << std::endl;
+    if (this->verbose)
+        std::cout << "Creating an Int8" << std::endl;
     try {
         n = std::stoi(value);
         if (n > CHAR_MAX || n < CHAR_MIN)
@@ -40,7 +42,8 @@ const IOperand* Factory::createInt8(std::string const & value) const {
 const IOperand* Factory::createInt16(std::string const & value) const {
     int         n;
     IOperand*   op;
-    std::cout << "Creating an Int16" << std::endl;
+    if (this->verbose)
+        std::cout << "Creating an Int16" << std::endl;
     try {
         n = std::stoi(value);
         if (n > SHRT_MAX || n < SHRT_MIN)
@@ -54,7 +57,8 @@ const IOperand* Factory::createInt16(std::string const & value) const {
 
 const IOperand* Factory::createInt32(std::string const & value) const {
     IOperand*   op;
-    std::cout << "Creating an Int32" << std::endl;
+    if (this->verbose)
+        std::cout << "Creating an Int32" << std::endl;
     try {
         op = new Operand<int32_t>(Int32, std::stoi(value), this);
     } catch (const std::out_of_range & oor) {
@@ -65,7 +69,8 @@ const IOperand* Factory::createInt32(std::string const & value) const {
 
 const IOperand* Factory::createFloat(std::string const & value) const {
     IOperand*   op;
-    std::cout << "Creating an Float" << std::endl;
+    if (this->verbose)
+        std::cout << "Creating an Float" << std::endl;
     try {
         op = new Operand<float>(Float, std::stof(value), this);
     } catch (const std::out_of_range & exc) {
@@ -78,7 +83,8 @@ const IOperand* Factory::createFloat(std::string const & value) const {
 
 const IOperand* Factory::createDouble(std::string const & value) const {
     IOperand*   op;
-    std::cout << "Creating an Double" << std::endl;
+    if (this->verbose)
+        std::cout << "Creating an Double" << std::endl;
     try {
         op = new Operand<double>(Double, std::stod(value), this);
     } catch (const std::out_of_range & exc) {
